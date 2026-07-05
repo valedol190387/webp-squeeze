@@ -1,0 +1,49 @@
+╔══════════════════════════════════════════════════════════╗
+║   WebP Squeeze — first launch on macOS / первый запуск     ║
+╚══════════════════════════════════════════════════════════╝
+
+── ENGLISH ────────────────────────────────────────────────
+
+On first launch macOS may say the app is
+"damaged and can't be opened" or "from an unidentified
+developer".
+
+The app is NOT broken. It simply isn't signed with a paid
+Apple certificate ($99/year), so macOS is being cautious.
+
+HOW TO OPEN:
+
+  1) Drag "WebP Squeeze" into the Applications folder.
+  2) Right-click the app → Open → Open.
+
+If it still refuses ("damaged"), open the Terminal app and run
+this one line, then open the app normally:
+
+  xattr -cr "/Applications/WebP Squeeze.app"
+
+That's it — you only need to do this once.
+
+
+── РУССКИЙ ─────────────────────────────────────────────────
+
+При первом запуске macOS может написать, что приложение
+«повреждено и не может быть открыто» или «от неизвестного
+разработчика».
+
+С приложением ВСЁ В ПОРЯДКЕ. Оно просто не подписано платным
+сертификатом Apple ($99/год), поэтому система осторожничает.
+
+КАК ОТКРЫТЬ:
+
+  1) Перетащи «WebP Squeeze» в папку Applications (Программы).
+  2) Правый клик по приложению → Открыть → Открыть.
+
+Если всё равно пишет «повреждено» — открой приложение
+«Терминал» и выполни одну строку, потом запусти как обычно:
+
+  xattr -cr "/Applications/WebP Squeeze.app"
+
+Всё — это нужно сделать только один раз.
+
+────────────────────────────────────────────────────────────
+  github.com/valedol190387/webp-squeeze

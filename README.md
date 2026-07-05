@@ -47,13 +47,18 @@ Grab a ready-made installer from the **[Releases](https://github.com/valedol1903
 | **Windows** — Installer | `WebP-Squeeze-x.x.x-Windows-Installer.exe` | Installs the app + creates shortcuts (recommended) |
 | **Windows** — Portable | `WebP-Squeeze-x.x.x-Windows-Portable.exe` | Runs without installing — no admin, no shortcuts, USB-friendly |
 
-### macOS — first launch
-The app is not signed with an Apple certificate ($99/yr), so macOS will ask for confirmation:
-right-click the icon → **Open** → **Open**. Once — after that it launches normally.
-If it's still blocked:
+### ⚠️ macOS — first launch (important)
+The app is **not signed with a paid Apple certificate** ($99/yr), so on first launch macOS may say it's **“damaged and can't be opened”** or **“from an unidentified developer”**. The app is fine — this is just Gatekeeper being cautious about unsigned apps.
+
+**How to open:**
+1. Drag **WebP Squeeze** into **Applications**.
+2. Right-click the app → **Open** → **Open**.
+
+If it still says **“damaged”**, open **Terminal** and run this once, then open normally:
 ```bash
 xattr -cr "/Applications/WebP Squeeze.app"
 ```
+> The DMG also ships a **“READ ME FIRST”** file with these steps, in English and Russian.
 
 ### Windows — first launch
 SmartScreen may show "Windows protected your PC" → **More info** → **Run anyway** (the app isn't signed with an EV certificate).

@@ -1,6 +1,6 @@
 {
   "name": "webp-squeeze",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Локальный минималистичный конвертер изображений в WebP",
   "author": "Valentin Bryukhantsev",
   "license": "MIT",
@@ -20,6 +20,7 @@
   "build": {
     "appId": "com.valentin.webpsqueeze",
     "productName": "WebP Squeeze",
+    "afterPack": "scripts/afterPack.js",
     "directories": {
       "output": "release"
     },
@@ -35,10 +36,37 @@
       "target": "dmg",
       "category": "public.app-category.graphics-design",
       "icon": "assets/icon.icns",
-      "artifactName": "WebP-Squeeze-${version}-macOS-arm64.${ext}"
+      "artifactName": "WebP-Squeeze-${version}-macOS-arm64.${ext}",
+      "identity": null
     },
     "dmg": {
-      "title": "WebP Squeeze"
+      "title": "WebP Squeeze",
+      "background": "assets/dmg-background.png",
+      "window": {
+        "width": 600,
+        "height": 520
+      },
+      "iconSize": 100,
+      "iconTextSize": 13,
+      "contents": [
+        {
+          "x": 150,
+          "y": 285,
+          "type": "file"
+        },
+        {
+          "x": 450,
+          "y": 285,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 300,
+          "y": 430,
+          "type": "file",
+          "path": "assets/READ ME FIRST (macOS).txt"
+        }
+      ]
     },
     "win": {
       "target": [
