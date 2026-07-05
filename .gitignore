@@ -1,0 +1,15 @@
+# Зависимости
+node_modules/
+
+# Сборка
+release/
+dist/
+
+# Временный набор иконок (icon.icns и icon.ico коммитим — они нужны CI)
+assets/icon.iconset/
+
+# ОС и редакторы
+.DS_Store
+*.log
+.vscode/
+.idea/

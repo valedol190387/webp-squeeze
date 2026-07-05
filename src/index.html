@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;" />
+  <title>WebP Squeeze</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #171a21;
+      --panel-2: #1e222b;
+      --border: #262b36;
+      --text: #e7ebf2;
+      --muted: #8b93a4;
+      --accent: #5b8cff;
+      --accent-soft: rgba(91, 140, 255, 0.14);
+      --good: #46d19e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+    }
+    .titlebar {
+      height: 38px;
+      -webkit-app-region: drag;
+      flex-shrink: 0;
+    }
+    .wrap {
+      flex: 1;
+      overflow-y: auto;
+      padding: 4px 22px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    h1 {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+    }
+    h1 span { color: var(--muted); font-weight: 400; }
+
+    /* Зона перетаскивания */
+    .drop {
+      border: 1.5px dashed var(--border);
+      border-radius: 14px;
+      background: var(--panel);
+      padding: 30px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+    .drop:hover { border-color: #38414f; }
+    .drop.over {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .drop .icon { font-size: 30px; opacity: .85; }
+    .drop .big { font-size: 14px; margin-top: 8px; font-weight: 500; }
+    .drop .small { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    /* Настройки */
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .label { font-size: 12px; color: var(--muted); }
+
+    .segmented { display: flex; gap: 6px; background: var(--panel-2); padding: 4px; border-radius: 10px; }
+    .segmented button {
+      flex: 1; border: none; background: transparent; color: var(--muted);
+      padding: 7px 10px; border-radius: 7px; font-size: 12px; cursor: pointer;
+      transition: background .12s, color .12s; font-family: inherit;
+    }
+    .segmented button.active { background: var(--accent); color: #fff; font-weight: 500; }
+
+    .slider-row { display: flex; align-items: center; gap: 12px; }
+    input[type=range] {
+      -webkit-appearance: none; appearance: none; flex: 1; height: 4px;
+      background: var(--panel-2); border-radius: 4px; outline: none;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+      background: var(--accent); cursor: pointer; border: 2px solid var(--bg);
+    }
+    input[type=range]:disabled { opacity: .35; }
+    .q-val { font-variant-numeric: tabular-nums; font-size: 13px; width: 34px; text-align: right; }
+
+    .out-dir {
+      font-size: 12px; color: var(--muted); background: var(--panel-2);
+      border-radius: 8px; padding: 6px 10px; cursor: pointer;
+      max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .out-dir:hover { color: var(--text); }
+
+    /* Список файлов */
+    .files { display: flex; flex-direction: column; gap: 8px; }
+    .file {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+      padding: 10px 12px; display: flex; align-items: center; gap: 12px; font-size: 12px;
+    }
+    .file .name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .file .meta { color: var(--muted); font-variant-numeric: tabular-nums; }
+    .file .saved { color: var(--good); font-weight: 600; }
+    .file .err { color: #ff6b6b; }
+    .file.done { cursor: pointer; }
+    .file .rm { color: var(--muted); cursor: pointer; padding: 0 4px; }
+    .file .rm:hover { color: #ff6b6b; }
+    .spin { width: 14px; height: 14px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: sp .7s linear infinite; }
+    @keyframes sp { to { transform: rotate(360deg); } }
+
+    /* Кнопка */
+    .actions { display: flex; gap: 10px; }
+    .btn {
+      flex: 1; border: none; border-radius: 11px; padding: 13px; font-size: 14px;
+      font-weight: 600; cursor: pointer; font-family: inherit; transition: filter .12s;
+    }
+    .btn:disabled { opacity: .4; cursor: default; }
+    .btn.primary { background: var(--accent); color: #fff; }
+    .btn.primary:not(:disabled):hover { filter: brightness(1.08); }
+    .btn.ghost { flex: 0 0 auto; background: var(--panel-2); color: var(--muted); }
+    .btn.ghost:hover { color: var(--text); }
+
+    .summary { text-align: center; font-size: 12px; color: var(--muted); min-height: 14px; }
+    .summary b { color: var(--good); }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="titlebar"></div>
+  <div class="wrap">
+    <h1>WebP Squeeze <span>— умное сжатие изображений</span></h1>
+
+    <div class="drop" id="drop">
+      <div class="icon">📥</div>
+      <div class="big">Перетащи изображения сюда</div>
+      <div class="small">PNG · JPG · JPEG · или нажми, чтобы выбрать</div>
+    </div>
+
+    <div class="card">
+      <div class="row">
+        <span class="label">Пресет</span>
+      </div>
+      <div class="segmented" id="presets">
+        <button data-preset="max" data-q="92">Макс. качество</button>
+        <button data-preset="balance" data-q="82" class="active">Баланс</button>
+        <button data-preset="min" data-q="65">Макс. сжатие</button>
+        <button data-preset="lossless" data-q="100">Без потерь</button>
+      </div>
+      <div class="row">
+        <span class="label">Качество</span>
+        <div class="slider-row" style="flex:1; max-width:60%;">
+          <input type="range" id="quality" min="1" max="100" value="82" />
+          <span class="q-val" id="qval">82</span>
+        </div>
+      </div>
+      <div class="row">
+        <span class="label">Сохранять в</span>
+        <div class="out-dir" id="outDir" title="Нажми, чтобы выбрать папку">рядом с оригиналом</div>
+      </div>
+    </div>
+
+    <div class="files" id="files"></div>
+
+    <div class="actions">
+      <button class="btn primary" id="convertBtn" disabled>Сжать в WebP</button>
+      <button class="btn ghost" id="clearBtn">Очистить</button>
+    </div>
+    <div class="summary" id="summary"></div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
