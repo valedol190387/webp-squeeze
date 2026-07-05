@@ -9,13 +9,15 @@
   <img alt="built with" src="https://img.shields.io/badge/built%20with-Electron%20%2B%20sharp-5b8cff" />
 
   <p><b>English</b> · <a href="README.ru.md">Русский</a></p>
+
+  <img src="assets/screenshot.png" width="560" alt="WebP Squeeze interface" />
 </div>
 
 ---
 
 ## ✨ Features
 
-- **Drag & drop** PNG / JPG / JPEG → WebP (also accepts TIFF / GIF / AVIF)
+- **Drag & drop** PNG / JPG / JPEG → **WebP or AVIF** (also accepts TIFF / GIF)
 - **Presets**: Max quality · Balance · Max compression · Lossless + manual slider
 - **Batch** — hundreds of files at once
 - Shows savings per file and in total
@@ -23,6 +25,17 @@
 - Click a converted file to reveal it in Finder / Explorer
 - 100% offline: images never leave your machine, works without internet
 - Localized UI (English / Russian) — auto by system language, with a manual RU/EN switch
+- Update notifier — tells you when a newer version is out, one click to the download
+
+## 🤔 Why WebP Squeeze?
+
+There are plenty of WebP tools — here's where this one fits, honestly:
+
+- **vs [Squoosh](https://squoosh.app) (Google):** Squoosh is excellent for tuning **one** image in a browser. WebP Squeeze is built for **batch** — drop dozens of files, get them all next to the originals in one click, fully offline.
+- **vs ImageOptim / other GUI apps:** native, minimal, **cross-platform** (macOS *and* Windows), with quality presets and AVIF output.
+- **vs `cwebp` / `sharp` CLI:** the same libwebp engine and quality — but no terminal. A real app your non-developer teammates can actually use.
+
+It doesn't try to be an image editor. It does one thing: **bulk, high-quality WebP/AVIF, locally.** WebP is typically ~25–35% smaller than JPEG and 60–90% smaller than PNG at the same visual quality — AVIF often smaller still.
 
 ## 📦 Install
 

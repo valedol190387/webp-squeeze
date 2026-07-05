@@ -152,11 +152,31 @@
     .summary { text-align: center; font-size: 12px; color: var(--muted); min-height: 14px; }
     .summary b { color: var(--good); }
     .hidden { display: none !important; }
+
+    /* Баннер обновления */
+    .update-bar {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--accent-soft); border: 1px solid var(--accent);
+      border-radius: 10px; padding: 9px 12px; font-size: 12px;
+    }
+    .update-bar .u-text { flex: 1; color: var(--text); }
+    .update-bar .u-btn {
+      border: none; background: var(--accent); color: #fff; font-weight: 600;
+      font-size: 12px; padding: 6px 12px; border-radius: 7px; cursor: pointer; font-family: inherit;
+    }
+    .update-bar .u-close { color: var(--muted); cursor: pointer; padding: 0 2px; }
+    .update-bar .u-close:hover { color: var(--text); }
   </style>
 </head>
 <body>
   <div class="titlebar"></div>
   <div class="wrap">
+    <div class="update-bar hidden" id="updateBar">
+      <span class="u-text" id="updateText"></span>
+      <button class="u-btn" id="updateBtn" data-i18n="update_download">Скачать</button>
+      <span class="u-close" id="updateClose">✕</span>
+    </div>
+
     <div class="header">
       <h1>WebP Squeeze <span data-i18n="subtitle">— умное сжатие изображений</span></h1>
       <div class="lang" id="lang">
@@ -172,6 +192,13 @@
     </div>
 
     <div class="card">
+      <div class="row">
+        <span class="label" data-i18n="format_label">Формат</span>
+      </div>
+      <div class="segmented" id="formats">
+        <button data-format="webp" class="active">WebP</button>
+        <button data-format="avif">AVIF</button>
+      </div>
       <div class="row">
         <span class="label" data-i18n="preset_label">Пресет</span>
       </div>
@@ -197,7 +224,7 @@
     <div class="files" id="files"></div>
 
     <div class="actions">
-      <button class="btn primary" id="convertBtn" data-i18n="convert" disabled>Сжать в WebP</button>
+      <button class="btn primary" id="convertBtn" disabled>Сжать в WebP</button>
       <button class="btn ghost" id="clearBtn" data-i18n="clear">Очистить</button>
     </div>
     <div class="summary" id="summary"></div>

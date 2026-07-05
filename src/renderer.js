@@ -1,5 +1,6 @@
 const dropEl = document.getElementById('drop');
 const filesEl = document.getElementById('files');
+const formatsEl = document.getElementById('formats');
 const presetsEl = document.getElementById('presets');
 const qualityEl = document.getElementById('quality');
 const qvalEl = document.getElementById('qval');
@@ -28,14 +29,16 @@ const DICT = {
     preset_balance: 'Баланс',
     preset_min: 'Макс. сжатие',
     preset_lossless: 'Без потерь',
+    format_label: 'Формат',
     quality_label: 'Качество',
     outdir_label: 'Сохранять в',
     outdir_default: 'рядом с оригиналом',
     outdir_tooltip: 'Нажми, чтобы выбрать папку',
-    convert: 'Сжать в WebP',
+    convert: 'Сжать в',
     converting: 'Сжимаю…',
     clear: 'Очистить',
     error_prefix: 'ошибка: ',
+    update_download: 'Скачать',
   },
   en: {
     subtitle: '— smart image compression',
@@ -46,14 +49,16 @@ const DICT = {
     preset_balance: 'Balance',
     preset_min: 'Max compression',
     preset_lossless: 'Lossless',
+    format_label: 'Format',
     quality_label: 'Quality',
     outdir_label: 'Save to',
     outdir_default: 'next to original',
     outdir_tooltip: 'Click to choose a folder',
-    convert: 'Squeeze to WebP',
+    convert: 'Squeeze to',
     converting: 'Squeezing…',
     clear: 'Clear',
     error_prefix: 'error: ',
+    update_download: 'Download',
   },
 };
 
@@ -82,7 +87,8 @@ function setLang(lang) {
   store.set('lang', lang);
   applyStaticI18n();
   markLangActive();
-  if (!state.busy) convertBtn.textContent = t('convert');
+  updateConvertLabel();
+  refreshUpdateText();
   if (!state.outputDir) {
     outDirEl.textContent = t('outdir_default');
     outDirEl.title = t('outdir_tooltip');
@@ -102,9 +108,16 @@ const state = {
   files: [],        // { path, name, el }
   quality: 82,
   mode: 'lossy',    // 'lossy' | 'lossless'
+  format: 'webp',   // 'webp' | 'avif'
   outputDir: null,  // null = рядом с оригиналом
   busy: false,
 };
+
+// Подпись кнопки: «Сжать в WebP» / «Squeeze to AVIF» и т.п.
+const FMT_NAME = { webp: 'WebP', avif: 'AVIF' };
+function updateConvertLabel() {
+  if (!state.busy) convertBtn.textContent = `${t('convert')} ${FMT_NAME[state.format]}`;
+}
 
 const SUPPORTED = ['png', 'jpg', 'jpeg', 'webp', 'tiff', 'tif', 'gif', 'avif'];
 
@@ -187,6 +200,16 @@ filesEl.addEventListener('click', (e) => {
   if (row && row.dataset.out) window.api.reveal(row.dataset.out);
 });
 
+// --- Формат вывода ---
+formatsEl.addEventListener('click', (e) => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  [...formatsEl.children].forEach((b) => b.classList.remove('active'));
+  btn.classList.add('active');
+  state.format = btn.dataset.format;
+  updateConvertLabel();
+});
+
 // --- Пресеты и слайдер ---
 presetsEl.addEventListener('click', (e) => {
   const btn = e.target.closest('button');
@@ -238,6 +261,7 @@ convertBtn.addEventListener('click', async () => {
       filePath: f.path,
       quality: state.quality,
       mode: state.mode,
+      format: state.format,
       outputDir: state.outputDir,
     });
 
@@ -255,7 +279,7 @@ convertBtn.addEventListener('click', async () => {
   }
 
   state.busy = false;
-  convertBtn.textContent = t('convert');
+  updateConvertLabel();
   render();
 
   if (okCount > 0) {
@@ -270,3 +294,29 @@ clearBtn.addEventListener('click', () => {
   summaryEl.textContent = '';
   render();
 });
+
+// Инициализация подписи кнопки при старте
+updateConvertLabel();
+
+// --- Уведомление об обновлении ---
+const updateBar = document.getElementById('updateBar');
+const updateText = document.getElementById('updateText');
+const updateBtn = document.getElementById('updateBtn');
+const updateClose = document.getElementById('updateClose');
+let updateInfo = null;
+
+// Текст баннера зависит от языка — перерисовываем и при смене языка
+function refreshUpdateText() {
+  if (!updateInfo) return;
+  updateText.textContent = LANG === 'ru'
+    ? `Доступна новая версия ${updateInfo.version}`
+    : `New version ${updateInfo.version} available`;
+}
+
+window.api.onUpdateAvailable((info) => {
+  updateInfo = info;
+  refreshUpdateText();
+  updateBar.classList.remove('hidden');
+});
+updateBtn.addEventListener('click', () => { if (updateInfo) window.api.openExternal(updateInfo.url); });
+updateClose.addEventListener('click', () => updateBar.classList.add('hidden'));

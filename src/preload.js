@@ -7,4 +7,6 @@ contextBridge.exposeInMainWorld('api', {
   pickOutputDir: () => ipcRenderer.invoke('pick-output-dir'),
   reveal: (p) => ipcRenderer.invoke('reveal', p),
   convert: (opts) => ipcRenderer.invoke('convert', opts),
+  openExternal: (url) => ipcRenderer.invoke('open-external', url),
+  onUpdateAvailable: (cb) => ipcRenderer.on('update-available', (_e, info) => cb(info)),
 });
