@@ -40,12 +40,27 @@
       flex-direction: column;
       gap: 16px;
     }
+    .header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
     h1 {
       font-size: 17px;
       font-weight: 600;
       letter-spacing: -0.2px;
     }
     h1 span { color: var(--muted); font-weight: 400; }
+
+    /* Переключатель языка */
+    .lang {
+      display: flex; gap: 2px; flex-shrink: 0;
+      background: var(--panel); border: 1px solid var(--border);
+      padding: 3px; border-radius: 8px;
+    }
+    .lang button {
+      border: none; background: transparent; color: var(--muted);
+      font-size: 11px; font-weight: 600; letter-spacing: .3px;
+      padding: 4px 9px; border-radius: 6px; cursor: pointer; font-family: inherit;
+      transition: background .12s, color .12s;
+    }
+    .lang button.active { background: var(--accent); color: #fff; }
 
     /* Зона перетаскивания */
     .drop {
@@ -142,42 +157,48 @@
 <body>
   <div class="titlebar"></div>
   <div class="wrap">
-    <h1>WebP Squeeze <span>— умное сжатие изображений</span></h1>
+    <div class="header">
+      <h1>WebP Squeeze <span data-i18n="subtitle">— умное сжатие изображений</span></h1>
+      <div class="lang" id="lang">
+        <button data-lang="ru">RU</button>
+        <button data-lang="en">EN</button>
+      </div>
+    </div>
 
     <div class="drop" id="drop">
       <div class="icon">📥</div>
-      <div class="big">Перетащи изображения сюда</div>
-      <div class="small">PNG · JPG · JPEG · или нажми, чтобы выбрать</div>
+      <div class="big" data-i18n="drop_big">Перетащи изображения сюда</div>
+      <div class="small" data-i18n="drop_small">PNG · JPG · JPEG · или нажми, чтобы выбрать</div>
     </div>
 
     <div class="card">
       <div class="row">
-        <span class="label">Пресет</span>
+        <span class="label" data-i18n="preset_label">Пресет</span>
       </div>
       <div class="segmented" id="presets">
-        <button data-preset="max" data-q="92">Макс. качество</button>
-        <button data-preset="balance" data-q="82" class="active">Баланс</button>
-        <button data-preset="min" data-q="65">Макс. сжатие</button>
-        <button data-preset="lossless" data-q="100">Без потерь</button>
+        <button data-preset="max" data-q="92" data-i18n="preset_max">Макс. качество</button>
+        <button data-preset="balance" data-q="82" class="active" data-i18n="preset_balance">Баланс</button>
+        <button data-preset="min" data-q="65" data-i18n="preset_min">Макс. сжатие</button>
+        <button data-preset="lossless" data-q="100" data-i18n="preset_lossless">Без потерь</button>
       </div>
       <div class="row">
-        <span class="label">Качество</span>
+        <span class="label" data-i18n="quality_label">Качество</span>
         <div class="slider-row" style="flex:1; max-width:60%;">
           <input type="range" id="quality" min="1" max="100" value="82" />
           <span class="q-val" id="qval">82</span>
         </div>
       </div>
       <div class="row">
-        <span class="label">Сохранять в</span>
-        <div class="out-dir" id="outDir" title="Нажми, чтобы выбрать папку">рядом с оригиналом</div>
+        <span class="label" data-i18n="outdir_label">Сохранять в</span>
+        <div class="out-dir" id="outDir" data-i18n="outdir_default" data-i18n-title="outdir_tooltip" title="Нажми, чтобы выбрать папку">рядом с оригиналом</div>
       </div>
     </div>
 
     <div class="files" id="files"></div>
 
     <div class="actions">
-      <button class="btn primary" id="convertBtn" disabled>Сжать в WebP</button>
-      <button class="btn ghost" id="clearBtn">Очистить</button>
+      <button class="btn primary" id="convertBtn" data-i18n="convert" disabled>Сжать в WebP</button>
+      <button class="btn ghost" id="clearBtn" data-i18n="clear">Очистить</button>
     </div>
     <div class="summary" id="summary"></div>
   </div>

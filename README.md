@@ -1,87 +1,71 @@
 <div align="center">
   <img src="assets/icon-source.png" width="140" alt="WebP Squeeze" />
   <h1>WebP Squeeze 🗜️</h1>
-  <p><b>Минималистичный офлайн-конвертер изображений в WebP для macOS и Windows.</b><br/>
-  Качество сжатия на уровне CloudConvert — тот же кодек <code>libwebp</code>, только локально, бесплатно и без лимитов.</p>
+  <p><b>Minimalist offline image-to-WebP converter for macOS and Windows.</b><br/>
+  CloudConvert-grade compression — the same <code>libwebp</code> codec, but local, free and unlimited.</p>
 
   <img alt="platform" src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows-blue" />
   <img alt="license" src="https://img.shields.io/badge/license-MIT-green" />
   <img alt="built with" src="https://img.shields.io/badge/built%20with-Electron%20%2B%20sharp-5b8cff" />
+
+  <p><b>English</b> · <a href="README.ru.md">Русский</a></p>
 </div>
 
 ---
 
-## ✨ Возможности
+## ✨ Features
 
-- **Drag & drop** PNG / JPG / JPEG → WebP (и TIFF/GIF/AVIF на вход)
-- **Пресеты**: Макс. качество · Баланс · Макс. сжатие · Без потерь + ручной слайдер
-- **Батч** — сотни файлов за раз
-- Показывает экономию по каждому файлу и суммарно
-- Сохраняет рядом с оригиналом или в выбранную папку
-- Клик по готовому файлу — открыть в проводнике / Finder
-- 100% офлайн: картинки никуда не уходят, работает без интернета
+- **Drag & drop** PNG / JPG / JPEG → WebP (also accepts TIFF / GIF / AVIF)
+- **Presets**: Max quality · Balance · Max compression · Lossless + manual slider
+- **Batch** — hundreds of files at once
+- Shows savings per file and in total
+- Saves next to the original or into a folder you pick
+- Click a converted file to reveal it in Finder / Explorer
+- 100% offline: images never leave your machine, works without internet
+- Localized UI (English / Russian) — auto by system language, with a manual RU/EN switch
 
-## 📦 Установка
+## 📦 Install
 
-Скачай готовый установщик со страницы **[Releases](https://github.com/valedol190387/webp-squeeze/releases/latest)**:
+Grab a ready-made installer from the **[Releases](https://github.com/valedol190387/webp-squeeze/releases/latest)** page:
 
-| ОС | Файл |
+| OS | File |
 |----|------|
 | **macOS** (Apple Silicon) | `WebP Squeeze-x.x.x-arm64.dmg` |
-| **Windows** (x64) | `WebP Squeeze Setup x.x.x.exe` (установщик) или `...portable.exe` (без установки) |
+| **Windows** (x64) | `WebP Squeeze Setup x.x.x.exe` (installer) or `...portable.exe` (no install) |
 
-### macOS — первый запуск
-Приложение не подписано сертификатом Apple ($99/год), поэтому macOS попросит подтверждение:
-правый клик по иконке → **Открыть** → **Открыть**. Один раз — дальше как обычно.
-Если всё равно блокирует:
+### macOS — first launch
+The app is not signed with an Apple certificate ($99/yr), so macOS will ask for confirmation:
+right-click the icon → **Open** → **Open**. Once — after that it launches normally.
+If it's still blocked:
 ```bash
 xattr -cr "/Applications/WebP Squeeze.app"
 ```
 
-### Windows — первый запуск
-SmartScreen может показать «Windows защитила ваш компьютер» → **Подробнее** → **Выполнить в любом случае** (приложение не подписано EV-сертификатом).
+### Windows — first launch
+SmartScreen may show "Windows protected your PC" → **More info** → **Run anyway** (the app isn't signed with an EV certificate).
 
-## 🛠 Сборка из исходников
+## 🛠 Build from source
 
 ```bash
 pnpm install
-pnpm run icon      # сгенерировать иконки из assets/icon-source.png (один раз)
-pnpm start         # запустить в режиме разработки
+pnpm run icon      # generate icons from assets/icon-source.png (once)
+pnpm start         # run in development
 
-pnpm run dist      # собрать под текущую ОС
-pnpm run dist:mac  # только macOS (.dmg)
-pnpm run dist:win  # только Windows (.exe) — требует Windows или CI
+pnpm run dist      # build for the current OS
+pnpm run dist:mac  # macOS only (.dmg)
+pnpm run dist:win  # Windows only (.exe) — requires Windows
 ```
 
-> Кросс-сборка Windows на macOS не поддерживается надёжно (нативный модуль `sharp` + NSIS).
-> Обе платформы собираются автоматически через **GitHub Actions** — см. ниже.
+> Cross-building Windows on macOS is not reliably supported (native `sharp` module + NSIS).
+> If you fork the repo, installers for both platforms are built automatically:
+> push a `vX.Y.Z` tag and the workflow [`.github/workflows/build.yml`](.github/workflows/build.yml)
+> builds `.dmg` + `.exe` on GitHub runners and attaches them to the Release.
 
-## 🤖 Релиз через GitHub Actions
+## 🧩 How it works
 
-Сборка `.dmg` и `.exe` идёт на нативных раннерах GitHub. Чтобы выпустить релиз:
+- **Electron** — window and packaging into a native app
+- **sharp** (libvips + libwebp) — compression engine, `quality` + `effort: 6` + `smartSubsample` (CloudConvert-grade settings)
 
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
-
-Workflow [`.github/workflows/build.yml`](.github/workflows/build.yml) соберёт установщики под macOS и Windows и приложит их к GitHub Release автоматически.
-
-## 🧩 Как это работает
-
-- **Electron** — окно и упаковка в нативное приложение
-- **sharp** (libvips + libwebp) — движок сжатия, `quality` + `effort: 6` + `smartSubsample` (настройки уровня CloudConvert)
-
----
-
-## English
-
-**WebP Squeeze** is a minimalist, fully offline image-to-WebP converter for macOS and Windows. It uses the same `libwebp` codec as CloudConvert (`effort 6`, smart subsampling) — top-tier compression, locally and for free.
-
-Drag & drop PNG/JPG, pick a quality preset or slider, hit convert. Batch supported, shows per-file and total savings. Grab a build from [Releases](https://github.com/valedol190387/webp-squeeze/releases/latest), or build from source with `pnpm install && pnpm start`.
-
-Built with Electron + sharp. MIT licensed.
-
-## 📄 Лицензия
+## 📄 License
 
 [MIT](LICENSE) © Valentin Bryukhantsev

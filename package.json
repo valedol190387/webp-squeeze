@@ -1,6 +1,6 @@
 {
   "name": "webp-squeeze",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Локальный минималистичный конвертер изображений в WebP",
   "author": "Valentin Bryukhantsev",
   "license": "MIT",

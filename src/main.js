@@ -56,11 +56,14 @@ function uniquePath(dir, base) {
   return candidate;
 }
 
+// Язык интерфейса системных диалогов — по локали ОС
+const isRu = () => app.getLocale().toLowerCase().startsWith('ru');
+
 // Диалог выбора файлов вручную (по кнопке)
 ipcMain.handle('pick-files', async () => {
   const res = await dialog.showOpenDialog(mainWindow, {
     properties: ['openFile', 'multiSelections'],
-    filters: [{ name: 'Изображения', extensions: ['png', 'jpg', 'jpeg', 'webp', 'tiff', 'tif', 'gif', 'avif'] }],
+    filters: [{ name: isRu() ? 'Изображения' : 'Images', extensions: ['png', 'jpg', 'jpeg', 'webp', 'tiff', 'tif', 'gif', 'avif'] }],
   });
   if (res.canceled) return [];
   return res.filePaths.filter(isSupported);
