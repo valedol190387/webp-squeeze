@@ -28,10 +28,11 @@
 
 Grab a ready-made installer from the **[Releases](https://github.com/valedol190387/webp-squeeze/releases/latest)** page:
 
-| OS | File |
-|----|------|
-| **macOS** (Apple Silicon) | `WebP Squeeze-x.x.x-arm64.dmg` |
-| **Windows** (x64) | `WebP Squeeze Setup x.x.x.exe` (installer) or `...portable.exe` (no install) |
+| OS | File | Notes |
+|----|------|-------|
+| **macOS** (Apple Silicon) | `WebP-Squeeze-x.x.x-macOS-arm64.dmg` | Open, drag to Applications |
+| **Windows** — Installer | `WebP-Squeeze-x.x.x-Windows-Installer.exe` | Installs the app + creates shortcuts (recommended) |
+| **Windows** — Portable | `WebP-Squeeze-x.x.x-Windows-Portable.exe` | Runs without installing — no admin, no shortcuts, USB-friendly |
 
 ### macOS — first launch
 The app is not signed with an Apple certificate ($99/yr), so macOS will ask for confirmation:

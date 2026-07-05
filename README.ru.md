@@ -28,10 +28,11 @@
 
 Скачай готовый установщик со страницы **[Releases](https://github.com/valedol190387/webp-squeeze/releases/latest)**:
 
-| ОС | Файл |
-|----|------|
-| **macOS** (Apple Silicon) | `WebP Squeeze-x.x.x-arm64.dmg` |
-| **Windows** (x64) | `WebP Squeeze Setup x.x.x.exe` (установщик) или `...portable.exe` (без установки) |
+| ОС | Файл | Пояснение |
+|----|------|-----------|
+| **macOS** (Apple Silicon) | `WebP-Squeeze-x.x.x-macOS-arm64.dmg` | Открыть, перетащить в Applications |
+| **Windows** — установщик | `WebP-Squeeze-x.x.x-Windows-Installer.exe` | Ставит приложение + создаёт ярлыки (рекомендую) |
+| **Windows** — portable | `WebP-Squeeze-x.x.x-Windows-Portable.exe` | Запускается без установки — без прав админа, без ярлыков, можно с флешки |
 
 ### macOS — первый запуск
 Приложение не подписано сертификатом Apple ($99/год), поэтому macOS попросит подтверждение:
